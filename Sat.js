@@ -1,5 +1,7 @@
 class Sat {
-    static testCollision(pointsA, pointsB) {
+    static testCollision(posA, posB, pointsA, pointsB) {
+        var overlap = Math.pow(10, 1000);
+        var smallest = new Vector2();
         var axesA = Sat.getAxes(pointsA);
         var axesB = Sat.getAxes(pointsB);
 
@@ -8,8 +10,16 @@ class Sat {
             let projB = Sat.project(axesA[i], pointsB);
 
             if (!Sat.overlap(projA, projB)) {
-                return false;
+                return null;
+            }
 
+            else{
+                var o = Sat.overlapDepth(projA, projB);
+
+                if(o < overlap){
+                    overlap = o;
+                    smallest = axesA[i];
+                }
             }
         }
 
@@ -18,11 +28,23 @@ class Sat {
             let projB = Sat.project(axesB[i], pointsB);
 
             if (!Sat.overlap(projA, projB)) {
-                return false;
+                return null;
+            }
+
+            else{
+                var o = Sat.overlapDepth(projA, projB);
+                
+                if(o < overlap){
+                    overlap = o;
+                    smallest = axesA[i];
+                }
             }
         }
 
-        return true; 
+        var mtv = {};
+        mtv.smallest = smallest;
+        mtv.overlap = overlap;
+        return mtv; 
     }
 
     static getAxes(points) {
@@ -35,7 +57,6 @@ class Sat {
             let edge = p1.subtract(p2);
             let normal = Vector2.perp(edge);
             axes[i] = normal.normalize();
-            console.log(axes[i])
         }
 
         return axes;
@@ -69,5 +90,9 @@ class Sat {
         }
 
         return false; 
+    }
+
+    static overlapDepth(p1, p2){
+        return Math.min(Math.abs(p1.min - p2.max), Math.abs(p1.max - p2.min));
     }
 }
