@@ -44,6 +44,24 @@ class Vector2 {
         return new Vector2(this.x - vector.x, this.y - vector.y);
     }
   
+    static rotate(vector, degree){
+      var radians = (degree * Math.PI) / 180;
+      var cosTheta = Math.cos(radians);
+      var sinTheta = Math.sin(radians);
+      var x = vector.x * cosTheta - vector.y * sinTheta;
+      var y = vector.x * sinTheta + vector.y * cosTheta;
 
+      return new Vector2(x, y);
+    }
+
+    static rotateInverse(vector, degree){
+      var radians = (degree * Math.PI) / 180;
+      var cosTheta = Math.cos(radians);
+      var sinTheta = Math.sin(radians);
+      var x = vector.x * cosTheta + vector.y * sinTheta;
+      var y = vector.x * -sinTheta + vector.y * cosTheta;
+
+      return new Vector2(x, y);
+    }
 
 }

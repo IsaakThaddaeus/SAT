@@ -1,13 +1,13 @@
 class Sat {
-    static testCollision(posA, posB, pointsA, pointsB) {
+    static testCollision(polygonA, polygonB) {
         var overlap = Math.pow(10, 1000);
         var smallest = new Vector2();
-        var axesA = Sat.getAxes(pointsA);
-        var axesB = Sat.getAxes(pointsB);
+        var axesA = Sat.getAxes(polygonA.pointGlobal);
+        var axesB = Sat.getAxes(polygonB.pointGlobal);
 
         for (let i = 0; i < axesA.length; i++) {
-            let projA = Sat.project(axesA[i], pointsA);
-            let projB = Sat.project(axesA[i], pointsB);
+            let projA = Sat.project(axesA[i], polygonA.pointGlobal);
+            let projB = Sat.project(axesA[i], polygonB.pointGlobal);
 
             if (!Sat.overlap(projA, projB)) {
                 return null;
@@ -24,8 +24,8 @@ class Sat {
         }
 
         for (let i = 0; i < axesB.length; i++) {
-            let projA = Sat.project(axesB[i], pointsA);
-            let projB = Sat.project(axesB[i], pointsB);
+            let projA = Sat.project(axesB[i], polygonA.pointGlobal);
+            let projB = Sat.project(axesB[i], polygonB.pointGlobal);
 
             if (!Sat.overlap(projA, projB)) {
                 return null;
@@ -44,6 +44,15 @@ class Sat {
         var mtv = {};
         mtv.smallest = smallest;
         mtv.overlap = overlap;
+        
+        var ab = polygonB.pos.subtract(polygonA.pos);
+        
+        if(Vector2.dot(ab, mtv.smallest) < 0){
+            mtv.smallest = mtv.smallest.scale(-1);
+        }
+    
+        mtv.resolution = mtv.smallest.scale(overlap);
+
         return mtv; 
     }
 
