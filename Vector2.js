@@ -8,6 +8,10 @@ class Vector2 {
       return Math.sqrt(this.x ** 2 + this.y ** 2);
     }
 
+    get lengthSq() {
+      return this.x ** 2 + this.y ** 2;
+    }
+
     scale(scalar) {
         return new Vector2(this.x * scalar, this.y * scalar);
     }
@@ -63,5 +67,15 @@ class Vector2 {
 
       return new Vector2(x, y);
     }
+
+    static nearlyEqualVector(a, b){
+        return this.nearlyEqual(a.x, b.x) && this.nearlyEqual(a.y, b.y);
+    }
+
+    static nearlyEqual(a, b){
+        return Math.abs(a - b) < 0.0001;
+    }
+      
+  
 
 }

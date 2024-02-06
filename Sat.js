@@ -36,7 +36,7 @@ class Sat {
                 
                 if(o < overlap){
                     overlap = o;
-                    smallest = axesA[i];
+                    smallest = axesB[i];
                 }
             }
         }
@@ -103,5 +103,106 @@ class Sat {
 
     static overlapDepth(p1, p2){
         return Math.min(Math.abs(p1.min - p2.max), Math.abs(p1.max - p2.min));
+    }
+
+
+    static getContactPoints(polygonA, polygonB){
+        
+        var verticesA = polygonA.pointGlobal;
+        var verticesB = polygonB.pointGlobal;
+
+        var c1 = new Vector2(0, 0);
+        var c2 = new Vector2(0, 0);
+        var contactCount = 0;
+        var minDist = Math.pow(10, 1000);
+
+        for (let i = 0; i < verticesA.length; i++) {
+            var p = verticesA[i];
+            
+            for (let j = 0; j < verticesA.length; j++){
+                var va = verticesB[j];
+                var vb = verticesB[(j+1) % verticesB.length];
+
+                var cp = this.lineSegmentPointDistance(p, va, vb);
+
+                if(cp != null)
+                {
+                    if(Vector2.nearlyEqual(cp.dist, minDist)){
+                        if(!Vector2.nearlyEqualVector(cp.pos, c1)){
+                            c2 = cp.pos;
+                            contactCount = 2;
+                        }
+                    }
+                    
+                    else if(cp.dist < minDist)
+                    {
+                        minDist = cp.dist;
+                        contactCount = 1;
+                        c1 = cp.pos;
+                    }
+                }
+            }
+        }
+
+
+        for (let i = 0; i < verticesB.length; i++) {
+            var p = verticesB[i];
+            
+            for (let j = 0; j < verticesA.length; j++){
+                var va = verticesA[j];
+                var vb = verticesA[(j+1) % verticesA.length];
+
+                var cp = this.lineSegmentPointDistance(p, va, vb);
+
+                if(cp != null)
+                {
+                    if(Vector2.nearlyEqual(cp.dist, minDist)){
+                        if(!Vector2.nearlyEqualVector(cp.pos, c1)){
+                            c2 = cp.pos;
+                            contactCount = 2;
+                        }
+                    }
+                    
+                    else if(cp.dist < minDist)
+                    {
+                        minDist = cp.dist;
+                        contactCount = 1;
+                        c1 = cp.pos;
+                    }
+                }
+            }
+        }
+
+        var contactPoints = {};
+        contactPoints.c1 = c1;
+        contactPoints.c2 = c2;
+        contactPoints.count = contactCount;
+
+        return contactPoints;
+
+    }
+
+
+    static lineSegmentPointDistance(p, a, b){
+        var cp = {};
+
+        var ab = b.subtract(a);
+        var ap = p.subtract(a);
+
+        var proj = Vector2.dot(ap, ab);
+        var abLenSQ = ab.lengthSq;
+
+        var d = proj/ abLenSQ;
+
+        if(d < 1 && d > 0){
+            var pos = a.add(ab.scale(d));
+            var dist = p.subtract(pos).length;
+
+            cp.pos = pos;
+            cp.dist = dist
+            return cp;
+        }
+
+        return null;
     }
 }

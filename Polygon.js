@@ -9,6 +9,9 @@ class Polygon{
 
     this.color = color;
 
+    this.up = new Vector2(0, -75);
+    this.forward = new Vector2(75, 0);
+
     this.a = new Vector2();
     this.v = new Vector2();
   }
@@ -23,9 +26,23 @@ class Polygon{
           ctx.lineTo(pointGlobal.x, pointGlobal.y);
         }
 
+      
         ctx.closePath();
         ctx.fill(); 
         
+        ctx.strokeStyle = "#9DD973";
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.lineTo(this.pos.x, this.pos.y);
+        ctx.lineTo(this.pos.x + this.getUp.scale(75).x, this.pos.y + this.getUp.scale(75).y);
+        ctx.stroke();
+
+        ctx.strokeStyle = "#2384D9";
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.lineTo(this.pos.x, this.pos.y);
+        ctx.lineTo(this.pos.x + this.getForward.scale(75).x, this.pos.y + this.getForward.scale(75).y);
+        ctx.stroke();
     }
 
 
@@ -37,6 +54,14 @@ class Polygon{
         }
 
         return globalPoints;
+    }
+
+    get getForward(){
+      return Vector2.rotate(this.forward, this.rotation).normalize();
+    }
+
+    get getUp(){
+      return Vector2.rotate(this.up, this.rotation).normalize();
     }
 
 }
