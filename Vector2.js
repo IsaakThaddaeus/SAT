@@ -1,9 +1,11 @@
 class Vector2 {
+  
     constructor(x, y) {
       this.x = x || 0;
       this.y = y || 0;
     }
   
+
     get length() {
       return Math.sqrt(this.x ** 2 + this.y ** 2);
     }
@@ -11,6 +13,8 @@ class Vector2 {
     get lengthSq() {
       return this.x ** 2 + this.y ** 2;
     }
+
+
 
     scale(scalar) {
         return new Vector2(this.x * scalar, this.y * scalar);
@@ -32,6 +36,16 @@ class Vector2 {
         return new Vector2();
     }
 
+    add(vector) {
+      return new Vector2(this.x + vector.x, this.y + vector.y);
+    }
+  
+    subtract(vector) {
+      return new Vector2(this.x - vector.x, this.y - vector.y);
+    }
+
+
+
     static dot(vector1, vector2) {
       return vector1.x * vector2.x + vector1.y * vector2.y;
     }
@@ -40,14 +54,6 @@ class Vector2 {
       return new Vector2(vector.y, -vector.x);
     }
 
-    add(vector) {
-        return new Vector2(this.x + vector.x, this.y + vector.y);
-    }
-    
-    subtract(vector) {
-        return new Vector2(this.x - vector.x, this.y - vector.y);
-    }
-  
     static rotate(vector, degree){
       var radians = (degree * Math.PI) / 180;
       var cosTheta = Math.cos(radians);
@@ -76,6 +82,9 @@ class Vector2 {
         return Math.abs(a - b) < 0.0001;
     }
       
+    static cross(a, b){
+      return a.x * b.y - a.y * b.x;
+    }
   
 
 }
