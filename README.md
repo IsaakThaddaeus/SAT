@@ -1,5 +1,5 @@
 # SAT
-This SAT (Separating Axis Theorem) Class determines overlap between convex polygons, providing the Minimum Translation Vector (MTV) and collision contact points.
+This SAT (Separating Axis Theorem) Class determines overlap between convex polygons, providing the Minimum Translation Vector (MTV) and collision contact points (1 or 2).
 
 SAT (Separating Axis Theorem) implementation is based on:
   * [SAT (Separating Axis Theorem)](https://dyn4j.org/2010/01/sat/#sat-mtv)
