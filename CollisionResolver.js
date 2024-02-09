@@ -185,10 +185,12 @@ class CollisionResolver {
             }
         }
 
-        var contactPoints = {};
-        contactPoints.c1 = c1;
-        contactPoints.c2 = c2;
-        contactPoints.count = contactCount;
+        var contactPoints = [];
+        contactPoints.push(c1);
+        
+        if(contactCount == 2){
+            contactPoints.push(c2);
+        }
 
         return contactPoints;
     }
