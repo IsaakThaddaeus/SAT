@@ -187,7 +187,7 @@ class CollisionResolver {
 
         var contactPoints = [];
         contactPoints.push(c1);
-        
+
         if(contactCount == 2){
             contactPoints.push(c2);
         }
